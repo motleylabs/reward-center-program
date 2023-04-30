@@ -18,6 +18,7 @@ mtly-reward-center-sdk = { path = "../sdk/reward-center" }
 log = "0.4.17"
 mtly-auction-house = { version = "1.4.1", features = ["cpi", "no-entrypoint"] }
 mtly-auction-house-sdk = { path = "../sdk/auction-house" }
+mpl-token-auth-rules = { version = "1.2.0", features = ["no-entrypoint"] }
 mpl-token-metadata = { version = "1.9.0", features = ["no-entrypoint"] }
 retry = "2.0.0"
 serde = { version = "1.0.145", features = ["derive"] }
