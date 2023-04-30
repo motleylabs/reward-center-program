@@ -4,11 +4,11 @@ pub mod reward_center_test;
 use anchor_client::solana_sdk::{
     instruction::AccountMeta, pubkey::Pubkey, signature::Signer, transaction::Transaction,
 };
-use hpl_reward_center::{pda::find_reward_center_address, reward_centers, state::*};
-use mpl_auction_house::{pda::find_auction_house_address, AuthorityScope};
+use mtly_reward_center::{pda::find_reward_center_address, reward_centers, state::*};
+use mtly_auction_house::{pda::find_auction_house_address, AuthorityScope};
 use reward_center_test::{fixtures::metadata, get_account};
 
-use hpl_reward_center_sdk::{
+use mtly_reward_center_sdk::{
     accept_offer,
     accounts::{AcceptOfferAccounts, *},
     args::{AcceptOfferData, *},
@@ -125,7 +125,7 @@ async fn accept_offer_multiple_success() {
         },
     };
 
-    let create_auction_house_accounts = mpl_auction_house_sdk::CreateAuctionHouseAccounts {
+    let create_auction_house_accounts = mtly_auction_house_sdk::CreateAuctionHouseAccounts {
         treasury_mint: mint,
         payer: wallet,
         authority: wallet,
@@ -133,19 +133,19 @@ async fn accept_offer_multiple_success() {
         treasury_withdrawal_destination: wallet,
         treasury_withdrawal_destination_owner: wallet,
     };
-    let create_auction_house_data = mpl_auction_house_sdk::CreateAuctionHouseData {
+    let create_auction_house_data = mtly_auction_house_sdk::CreateAuctionHouseData {
         seller_fee_basis_points: 100,
         requires_sign_off: false,
         can_change_sale_price: false,
     };
 
-    let create_auction_house_ix = mpl_auction_house_sdk::create_auction_house(
+    let create_auction_house_ix = mtly_auction_house_sdk::create_auction_house(
         create_auction_house_accounts,
         create_auction_house_data,
     );
 
-    let create_reward_center_ix = hpl_reward_center_sdk::create_reward_center(
-        hpl_reward_center_sdk::accounts::CreateRewardCenterAccounts {
+    let create_reward_center_ix = mtly_reward_center_sdk::create_reward_center(
+        mtly_reward_center_sdk::accounts::CreateRewardCenterAccounts {
             wallet,
             mint: reward_mint_keypair.pubkey(),
             auction_house_treasury_mint: mint,
@@ -154,13 +154,13 @@ async fn accept_offer_multiple_success() {
         reward_center_params,
     );
 
-    let delegate_auctioneer_accounts = mpl_auction_house_sdk::DelegateAuctioneerAccounts {
+    let delegate_auctioneer_accounts = mtly_auction_house_sdk::DelegateAuctioneerAccounts {
         auction_house,
         authority: wallet,
         auctioneer_authority: reward_center,
     };
 
-    let delegate_auctioneer_data = mpl_auction_house_sdk::DelegateAuctioneerData {
+    let delegate_auctioneer_data = mtly_auction_house_sdk::DelegateAuctioneerData {
         scopes: vec![
             AuthorityScope::Deposit,
             AuthorityScope::Buy,
@@ -172,7 +172,7 @@ async fn accept_offer_multiple_success() {
         ],
     };
 
-    let delegate_auctioneer_ix = mpl_auction_house_sdk::delegate_auctioneer(
+    let delegate_auctioneer_ix = mtly_auction_house_sdk::delegate_auctioneer(
         delegate_auctioneer_accounts,
         delegate_auctioneer_data,
     );

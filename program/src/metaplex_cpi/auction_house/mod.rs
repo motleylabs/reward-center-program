@@ -1,5 +1,5 @@
 use anchor_lang::prelude::*;
-use mpl_auction_house::id;
+use mtly_auction_house::id;
 use solana_program::instruction::Instruction;
 
 pub struct AuctioneerInstructionArgs<'c, 'info, T> {

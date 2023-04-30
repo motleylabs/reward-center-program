@@ -94,7 +94,7 @@ export const closeOfferInstructionDiscriminator = [191, 72, 67, 35, 239, 209, 97
 export function createCloseOfferInstruction(
   accounts: CloseOfferInstructionAccounts,
   args: CloseOfferInstructionArgs,
-  programId = new web3.PublicKey('RwDDvPp7ta9qqUwxbBfShsNreBaSsKvFcHzMxfBC3Ki'),
+  programId = new web3.PublicKey('rwdD3F6CgoCAoVaxcitXAeWRjQdiGc5AVABKCpQSMfd'),
 ) {
   const [data] = closeOfferStruct.serialize({
     instructionDiscriminator: closeOfferInstructionDiscriminator,

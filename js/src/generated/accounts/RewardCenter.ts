@@ -81,7 +81,7 @@ export class RewardCenter implements RewardCenterArgs {
    * @param programId - the program that owns the accounts we are filtering
    */
   static gpaBuilder(
-    programId: web3.PublicKey = new web3.PublicKey('RwDDvPp7ta9qqUwxbBfShsNreBaSsKvFcHzMxfBC3Ki'),
+    programId: web3.PublicKey = new web3.PublicKey('rwdD3F6CgoCAoVaxcitXAeWRjQdiGc5AVABKCpQSMfd'),
   ) {
     return beetSolana.GpaBuilder.fromStruct(programId, rewardCenterBeet);
   }

@@ -3,9 +3,9 @@ use std::{path::PathBuf, str::FromStr, vec};
 use crate::config::{parse_keypair, parse_solana_configuration};
 use anchor_lang::{prelude::Pubkey, AnchorDeserialize};
 use anyhow::{bail, Context, Result as AnyhowResult};
-use hpl_reward_center::{pda::find_reward_center_address, state::RewardCenter};
+use mtly_reward_center::{pda::find_reward_center_address, state::RewardCenter};
 use log::{error, info};
-use mpl_auction_house::{
+use mtly_auction_house::{
     pda::{find_auctioneer_pda, find_program_as_signer_address},
     AuctionHouse,
 };

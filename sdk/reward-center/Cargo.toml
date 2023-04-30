@@ -1,13 +1,13 @@
 [package]
-name = "hpl-reward-center-sdk"
+name = "mtly-reward-center-sdk"
 version = "0.2.5"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-hpl-reward-center = { path = "./../../program", features = ["no-entrypoint"]}
-mpl-auction-house = { version = "1.4.0", features = ["no-entrypoint"]}
+mtly-reward-center = { path = "./../../program", features = ["no-entrypoint"]}
+mtly-auction-house = { version = "1.4.0", features = ["no-entrypoint"]}
 anchor-lang = "0.26.0"
 anchor-client = "0.26.0"
 spl-associated-token-account = { version = "1.1.2", features = ["no-entrypoint"] }

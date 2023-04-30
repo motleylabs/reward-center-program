@@ -1,4 +1,4 @@
-# mpl-reward-center
+# mtly-reward-center
 
 This package contains the reward center contract SDK code.
 

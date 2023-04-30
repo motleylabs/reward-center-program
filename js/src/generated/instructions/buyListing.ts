@@ -46,7 +46,7 @@ export const buyListingStruct = new beet.BeetArgsStruct<
  * @property [_writable_] listing
  * @property [_writable_] tokenAccount
  * @property [] tokenMint
- * @property [] metadata
+ * @property [_writable_] metadata
  * @property [] treasuryMint
  * @property [_writable_] sellerPaymentReceiptAccount
  * @property [_writable_] buyerReceiptTokenAccount
@@ -116,7 +116,7 @@ export const buyListingInstructionDiscriminator = [115, 149, 42, 108, 44, 49, 14
 export function createBuyListingInstruction(
   accounts: BuyListingInstructionAccounts,
   args: BuyListingInstructionArgs,
-  programId = new web3.PublicKey('RwDDvPp7ta9qqUwxbBfShsNreBaSsKvFcHzMxfBC3Ki'),
+  programId = new web3.PublicKey('rwdD3F6CgoCAoVaxcitXAeWRjQdiGc5AVABKCpQSMfd'),
 ) {
   const [data] = buyListingStruct.serialize({
     instructionDiscriminator: buyListingInstructionDiscriminator,
@@ -170,7 +170,7 @@ export function createBuyListingInstruction(
     },
     {
       pubkey: accounts.metadata,
-      isWritable: false,
+      isWritable: true,
       isSigner: false,
     },
     {

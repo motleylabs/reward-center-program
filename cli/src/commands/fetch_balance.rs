@@ -2,7 +2,7 @@ use std::str::FromStr;
 
 use anchor_lang::{prelude::Pubkey, AnchorDeserialize};
 use anyhow::{Context, Result as AnyhowResult};
-use hpl_reward_center::state::RewardCenter;
+use mtly_reward_center::state::RewardCenter;
 use log::info;
 use solana_client::rpc_client::RpcClient;
 use spl_associated_token_account::get_associated_token_address;

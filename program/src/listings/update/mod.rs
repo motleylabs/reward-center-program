@@ -1,6 +1,6 @@
 use anchor_lang::prelude::*;
 use anchor_spl::token::TokenAccount;
-use mpl_auction_house::{
+use mtly_auction_house::{
     constants::PREFIX, program::AuctionHouse as AuctionHouseProgram, utils::assert_metadata_valid,
     AuctionHouse,
 };
@@ -62,7 +62,7 @@ pub struct UpdateListing<'info> {
     )]
     pub auction_house: Box<Account<'info, AuctionHouse>>,
 
-    /// CHECK: assertion with mpl_auction_house assert_metadata_valid
+    /// CHECK: assertion with mtly_auction_house assert_metadata_valid
     /// Metaplex metadata account decorating SPL mint account.
     pub metadata: UncheckedAccount<'info>,
 

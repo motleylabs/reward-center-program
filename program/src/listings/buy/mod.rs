@@ -12,7 +12,7 @@ use anchor_spl::{
     associated_token::AssociatedToken,
     token::{transfer, Mint, Token, TokenAccount, Transfer},
 };
-use mpl_auction_house::{
+use mtly_auction_house::{
     constants::{AUCTIONEER, FEE_PAYER, PREFIX, SIGNER, TREASURY},
     cpi::accounts::{AuctioneerDeposit, AuctioneerExecuteSale, AuctioneerPublicBuy},
     instruction::AuctioneerExecuteSale as AuctioneerExecuteSaleParams,
@@ -94,7 +94,7 @@ pub struct BuyListing<'info> {
     /// Token mint account for the SPL token.
     pub token_mint: Box<Account<'info, Mint>>,
 
-    /// CHECK: assertion with mpl_auction_house assert_metadata_valid
+    /// CHECK: assertion with mtly_auction_house assert_metadata_valid
     /// Metaplex metadata account decorating SPL mint account.
     #[account(mut)]
     pub metadata: UncheckedAccount<'info>,
@@ -317,7 +317,7 @@ pub fn handler<'info>(
 
     assert_metadata_valid(metadata, token_account)?;
 
-    mpl_auction_house::cpi::auctioneer_deposit(
+    mtly_auction_house::cpi::auctioneer_deposit(
         CpiContext::new_with_signer(
             ctx.accounts.auction_house_program.to_account_info(),
             AuctioneerDeposit {
@@ -341,7 +341,7 @@ pub fn handler<'info>(
         listing_price,
     )?;
 
-    mpl_auction_house::cpi::auctioneer_public_buy(
+    mtly_auction_house::cpi::auctioneer_public_buy(
         CpiContext::new_with_signer(
             ctx.accounts.auction_house_program.to_account_info(),
             AuctioneerPublicBuy {

@@ -68,7 +68,7 @@ export const closeListingInstructionDiscriminator = [33, 15, 192, 81, 78, 175, 1
  */
 export function createCloseListingInstruction(
   accounts: CloseListingInstructionAccounts,
-  programId = new web3.PublicKey('RwDDvPp7ta9qqUwxbBfShsNreBaSsKvFcHzMxfBC3Ki'),
+  programId = new web3.PublicKey('rwdD3F6CgoCAoVaxcitXAeWRjQdiGc5AVABKCpQSMfd'),
 ) {
   const [data] = closeListingStruct.serialize({
     instructionDiscriminator: closeListingInstructionDiscriminator,

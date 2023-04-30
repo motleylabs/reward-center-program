@@ -2,9 +2,9 @@ use std::{path::PathBuf, str::FromStr};
 
 use anchor_lang::AnchorDeserialize;
 use anyhow::{anyhow, bail, Context, Result as AnyhowResult};
-use hpl_reward_center::state::RewardCenter;
-use hpl_reward_center_sdk::accounts::WithdrawRewardCenterFundsAccounts;
-use hpl_reward_center_sdk::withdraw_reward_center_funds;
+use mtly_reward_center::state::RewardCenter;
+use mtly_reward_center_sdk::accounts::WithdrawRewardCenterFundsAccounts;
+use mtly_reward_center_sdk::withdraw_reward_center_funds;
 use log::{error, info};
 use retry::{delay::Exponential, retry};
 use solana_client::{client_error::ClientErrorKind, rpc_client::RpcClient, rpc_request::RpcError};

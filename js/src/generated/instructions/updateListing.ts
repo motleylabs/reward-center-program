@@ -73,7 +73,7 @@ export const updateListingInstructionDiscriminator = [192, 174, 210, 68, 116, 40
 export function createUpdateListingInstruction(
   accounts: UpdateListingInstructionAccounts,
   args: UpdateListingInstructionArgs,
-  programId = new web3.PublicKey('RwDDvPp7ta9qqUwxbBfShsNreBaSsKvFcHzMxfBC3Ki'),
+  programId = new web3.PublicKey('rwdD3F6CgoCAoVaxcitXAeWRjQdiGc5AVABKCpQSMfd'),
 ) {
   const [data] = updateListingStruct.serialize({
     instructionDiscriminator: updateListingInstructionDiscriminator,

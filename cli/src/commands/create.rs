@@ -5,18 +5,18 @@ use std::{
 };
 
 use anyhow::{bail, Context, Result as AnyhowResult};
-use hpl_reward_center::pda::find_reward_center_address;
-use hpl_reward_center_sdk::accounts::CreateRewardCenterAccounts;
-use hpl_reward_center_sdk::create_reward_center;
+use mtly_reward_center::pda::find_reward_center_address;
+use mtly_reward_center_sdk::accounts::CreateRewardCenterAccounts;
+use mtly_reward_center_sdk::create_reward_center;
 use log::{error, info, warn};
-use mpl_auction_house::{
+use mtly_auction_house::{
     pda::{
         find_auction_house_address, find_auction_house_fee_account_address,
         find_auction_house_treasury_address,
     },
     state::AuthorityScope,
 };
-use mpl_auction_house_sdk::{
+use mtly_auction_house_sdk::{
     accounts::{CreateAuctionHouseAccounts, DelegateAuctioneerAccounts},
     args::{CreateAuctionHouseData, DelegateAuctioneerData},
     create_auction_house, delegate_auctioneer,
@@ -178,16 +178,16 @@ pub fn generate_create_reward_center_ix(
             auction_house,
             auction_house_treasury_mint: native_mint::id(),
         },
-        hpl_reward_center::reward_centers::create::CreateRewardCenterParams {
+        mtly_reward_center::reward_centers::create::CreateRewardCenterParams {
             reward_rules: {
-                hpl_reward_center::state::RewardRules {
+                mtly_reward_center::state::RewardRules {
                     seller_reward_payout_basis_points,
                     mathematical_operand: match mathematical_operand {
                         PayoutOperation::Divide => {
-                            hpl_reward_center::state::PayoutOperation::Divide
+                            mtly_reward_center::state::PayoutOperation::Divide
                         },
                         PayoutOperation::Multiple => {
-                            hpl_reward_center::state::PayoutOperation::Multiple
+                            mtly_reward_center::state::PayoutOperation::Multiple
                         },
                     },
                     payout_numeral,

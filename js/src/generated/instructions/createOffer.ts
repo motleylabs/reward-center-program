@@ -93,7 +93,7 @@ export const createOfferInstructionDiscriminator = [237, 233, 192, 168, 248, 7, 
 export function createCreateOfferInstruction(
   accounts: CreateOfferInstructionAccounts,
   args: CreateOfferInstructionArgs,
-  programId = new web3.PublicKey('RwDDvPp7ta9qqUwxbBfShsNreBaSsKvFcHzMxfBC3Ki'),
+  programId = new web3.PublicKey('rwdD3F6CgoCAoVaxcitXAeWRjQdiGc5AVABKCpQSMfd'),
 ) {
   const [data] = createOfferStruct.serialize({
     instructionDiscriminator: createOfferInstructionDiscriminator,

@@ -3,7 +3,7 @@ use anchor_spl::{
     associated_token::AssociatedToken,
     token::{Mint, Token, TokenAccount},
 };
-use mpl_auction_house::{
+use mtly_auction_house::{
     constants::{AUCTIONEER, FEE_PAYER, PREFIX},
     cpi::accounts::{AuctioneerCancel, AuctioneerWithdraw},
     instruction::{
@@ -65,7 +65,7 @@ pub struct CloseOffer<'info> {
     )]
     pub escrow_payment_account: UncheckedAccount<'info>,
 
-    /// CHECK: assertion with mpl_auction_house assert_metadata_valid
+    /// CHECK: assertion with mtly_auction_house assert_metadata_valid
     /// Metaplex metadata account decorating SPL mint account.
     pub metadata: UncheckedAccount<'info>,
 

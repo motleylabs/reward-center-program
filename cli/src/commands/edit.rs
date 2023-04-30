@@ -5,11 +5,11 @@ use std::{
 };
 
 use anyhow::{bail, Context, Result as AnyhowResult};
-use hpl_reward_center::{
+use mtly_reward_center::{
     reward_centers::edit::EditRewardCenterParams,
     state::{PayoutOperation, RewardRules},
 };
-use hpl_reward_center_sdk::edit_reward_center;
+use mtly_reward_center_sdk::edit_reward_center;
 use log::{error, info};
 use retry::{delay::Exponential, retry};
 use solana_client::rpc_client::RpcClient;

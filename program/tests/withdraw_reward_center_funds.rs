@@ -4,8 +4,8 @@ pub mod reward_center_test;
 use std::println;
 
 use anchor_client::solana_sdk::{signature::Signer, transaction::Transaction};
-use hpl_reward_center::{pda::find_reward_center_address, reward_centers, state::*};
-use mpl_auction_house::pda::find_auction_house_address;
+use mtly_reward_center::{pda::find_reward_center_address, reward_centers, state::*};
+use mtly_auction_house::pda::find_auction_house_address;
 
 use mpl_testing_utils::solana::airdrop;
 use solana_program_test::*;
@@ -89,7 +89,7 @@ async fn withdraw_reward_center_funds_success() {
         },
     };
 
-    let create_auction_house_accounts = mpl_auction_house_sdk::CreateAuctionHouseAccounts {
+    let create_auction_house_accounts = mtly_auction_house_sdk::CreateAuctionHouseAccounts {
         treasury_mint: mint,
         payer: wallet,
         authority: wallet,
@@ -97,19 +97,19 @@ async fn withdraw_reward_center_funds_success() {
         treasury_withdrawal_destination: wallet,
         treasury_withdrawal_destination_owner: wallet,
     };
-    let create_auction_house_data = mpl_auction_house_sdk::CreateAuctionHouseData {
+    let create_auction_house_data = mtly_auction_house_sdk::CreateAuctionHouseData {
         seller_fee_basis_points: 100,
         requires_sign_off: false,
         can_change_sale_price: false,
     };
 
-    let create_auction_house_ix = mpl_auction_house_sdk::create_auction_house(
+    let create_auction_house_ix = mtly_auction_house_sdk::create_auction_house(
         create_auction_house_accounts,
         create_auction_house_data,
     );
 
-    let create_reward_center_ix = hpl_reward_center_sdk::create_reward_center(
-        hpl_reward_center_sdk::accounts::CreateRewardCenterAccounts {
+    let create_reward_center_ix = mtly_reward_center_sdk::create_reward_center(
+        mtly_reward_center_sdk::accounts::CreateRewardCenterAccounts {
             wallet,
             mint: reward_mint_keypair.pubkey(),
             auction_house_treasury_mint: mint,
@@ -144,8 +144,8 @@ async fn withdraw_reward_center_funds_success() {
     let create_destination_token_account_ix =
         create_associated_token_account(&wallet, &wallet, &reward_mint_keypair.pubkey());
 
-    let withdraw_reward_center_funds_ix = hpl_reward_center_sdk::withdraw_reward_center_funds(
-        hpl_reward_center_sdk::accounts::WithdrawRewardCenterFundsAccounts {
+    let withdraw_reward_center_funds_ix = mtly_reward_center_sdk::withdraw_reward_center_funds(
+        mtly_reward_center_sdk::accounts::WithdrawRewardCenterFundsAccounts {
             wallet,
             rewards_mint: reward_mint_keypair.pubkey(),
             auction_house,

@@ -4,7 +4,7 @@ use anchor_spl::{
     token::{Mint, Token, TokenAccount},
 };
 
-use mpl_auction_house::{constants::PREFIX, AuctionHouse};
+use mtly_auction_house::{constants::PREFIX, AuctionHouse};
 
 use crate::{
     constants::REWARD_CENTER,
@@ -53,7 +53,7 @@ pub struct CreateRewardCenter<'info> {
             auction_house.creator.as_ref(),
             auction_house.treasury_mint.as_ref()
         ],
-        seeds::program = mpl_auction_house::id(),
+        seeds::program = mtly_auction_house::id(),
         bump = auction_house.bump
     )]
     pub auction_house: Box<Account<'info, AuctionHouse>>,

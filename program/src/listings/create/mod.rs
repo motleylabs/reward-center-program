@@ -8,7 +8,7 @@ use crate::{
     metaplex_cpi::auction_house::{make_auctioneer_instruction, AuctioneerInstructionArgs},
     state::{Listing, RewardCenter},
 };
-use mpl_auction_house::{
+use mtly_auction_house::{
     constants::{AUCTIONEER, FEE_PAYER, PREFIX, SIGNER},
     cpi::accounts::AuctioneerSell,
     instruction::AuctioneerSell as AuctioneerSellParams,
@@ -74,7 +74,7 @@ pub struct CreateListing<'info> {
     )]
     pub token_account: Box<Account<'info, TokenAccount>>,
 
-    /// CHECK: assertion with mpl_auction_house assert_metadata_valid
+    /// CHECK: assertion with mtly_auction_house assert_metadata_valid
     /// Metaplex metadata account decorating SPL mint account.
     pub metadata: UncheckedAccount<'info>,
 

@@ -68,7 +68,7 @@ export const editRewardCenterInstructionDiscriminator = [185, 238, 29, 159, 195,
 export function createEditRewardCenterInstruction(
   accounts: EditRewardCenterInstructionAccounts,
   args: EditRewardCenterInstructionArgs,
-  programId = new web3.PublicKey('RwDDvPp7ta9qqUwxbBfShsNreBaSsKvFcHzMxfBC3Ki'),
+  programId = new web3.PublicKey('rwdD3F6CgoCAoVaxcitXAeWRjQdiGc5AVABKCpQSMfd'),
 ) {
   const [data] = editRewardCenterStruct.serialize({
     instructionDiscriminator: editRewardCenterInstructionDiscriminator,

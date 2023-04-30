@@ -80,7 +80,7 @@ export const createRewardCenterInstructionDiscriminator = [51, 138, 29, 157, 96,
 export function createCreateRewardCenterInstruction(
   accounts: CreateRewardCenterInstructionAccounts,
   args: CreateRewardCenterInstructionArgs,
-  programId = new web3.PublicKey('RwDDvPp7ta9qqUwxbBfShsNreBaSsKvFcHzMxfBC3Ki'),
+  programId = new web3.PublicKey('rwdD3F6CgoCAoVaxcitXAeWRjQdiGc5AVABKCpQSMfd'),
 ) {
   const [data] = createRewardCenterStruct.serialize({
     instructionDiscriminator: createRewardCenterInstructionDiscriminator,

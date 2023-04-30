@@ -1669,41 +1669,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "hpl-reward-center"
-version = "0.2.5"
-dependencies = [
- "anchor-client",
- "anchor-lang",
- "anchor-spl",
- "env_logger 0.10.0",
- "hpl-reward-center-sdk",
- "mpl-auction-house",
- "mpl-auction-house-sdk",
- "mpl-testing-utils",
- "mpl-token-auth-rules",
- "mpl-token-metadata",
- "serde_json",
- "shellexpand 3.0.0",
- "solana-program",
- "solana-program-test",
- "solana-sdk",
- "spl-associated-token-account",
- "spl-token",
-]
-
-[[package]]
-name = "hpl-reward-center-sdk"
-version = "0.2.5"
-dependencies = [
- "anchor-client",
- "anchor-lang",
- "hpl-reward-center",
- "mpl-auction-house",
- "spl-associated-token-account",
- "spl-token",
-]
-
-[[package]]
 name = "http"
 version = "0.2.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2210,33 +2175,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "mpl-auction-house"
-version = "1.4.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "43f1645cd0639e193c1f99e82cad4c8024412501bd43e597e5559aad6cf02560"
-dependencies = [
- "anchor-lang",
- "anchor-spl",
- "arrayref",
- "mpl-token-auth-rules",
- "mpl-token-metadata",
- "solana-program",
- "spl-associated-token-account",
- "spl-token",
- "thiserror",
-]
-
-[[package]]
-name = "mpl-auction-house-sdk"
-version = "1.4.0"
-dependencies = [
- "anchor-client",
- "anchor-lang",
- "anchor-spl",
- "mpl-auction-house",
-]
-
-[[package]]
 name = "mpl-testing-utils"
 version = "0.1.1"
 dependencies = [
@@ -2329,6 +2267,68 @@ dependencies = [
  "arrayref",
  "borsh",
  "solana-program",
+ "spl-token",
+]
+
+[[package]]
+name = "mtly-auction-house"
+version = "1.4.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e4cf4e5b33cb19d007dffad9817fdc179fa717167395ca48852f83763db01c6e"
+dependencies = [
+ "anchor-lang",
+ "anchor-spl",
+ "arrayref",
+ "mpl-token-auth-rules",
+ "mpl-token-metadata",
+ "solana-program",
+ "spl-associated-token-account",
+ "spl-token",
+ "thiserror",
+]
+
+[[package]]
+name = "mtly-auction-house-sdk"
+version = "1.4.1"
+dependencies = [
+ "anchor-client",
+ "anchor-lang",
+ "anchor-spl",
+ "mtly-auction-house",
+]
+
+[[package]]
+name = "mtly-reward-center"
+version = "0.2.5"
+dependencies = [
+ "anchor-client",
+ "anchor-lang",
+ "anchor-spl",
+ "env_logger 0.10.0",
+ "mpl-testing-utils",
+ "mpl-token-auth-rules",
+ "mpl-token-metadata",
+ "mtly-auction-house",
+ "mtly-auction-house-sdk",
+ "mtly-reward-center-sdk",
+ "serde_json",
+ "shellexpand 3.0.0",
+ "solana-program",
+ "solana-program-test",
+ "solana-sdk",
+ "spl-associated-token-account",
+ "spl-token",
+]
+
+[[package]]
+name = "mtly-reward-center-sdk"
+version = "0.2.5"
+dependencies = [
+ "anchor-client",
+ "anchor-lang",
+ "mtly-auction-house",
+ "mtly-reward-center",
+ "spl-associated-token-account",
  "spl-token",
 ]
 

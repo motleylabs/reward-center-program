@@ -18,7 +18,7 @@ use crate::{
     withdraw::reward_center::*,
 };
 
-declare_id!("RwDDvPp7ta9qqUwxbBfShsNreBaSsKvFcHzMxfBC3Ki");
+declare_id!("rwdD3F6CgoCAoVaxcitXAeWRjQdiGc5AVABKCpQSMfd");
 
 #[program]
 pub mod reward_center {

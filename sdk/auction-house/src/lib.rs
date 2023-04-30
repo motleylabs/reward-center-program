@@ -8,7 +8,7 @@ use anchor_client::solana_sdk::sysvar;
 use anchor_client::solana_sdk::{instruction::Instruction, system_program};
 use anchor_lang::{prelude::*, InstructionData};
 use anchor_spl::{associated_token::AssociatedToken, token::spl_token};
-use mpl_auction_house::pda::{
+use mtly_auction_house::pda::{
     find_auction_house_address, find_auction_house_fee_account_address,
     find_auction_house_treasury_address, find_auctioneer_pda,
 };
@@ -34,7 +34,7 @@ pub fn create_auction_house(
     let (auction_house_treasury, treasury_bump) =
         find_auction_house_treasury_address(&auction_house);
 
-    let accounts = mpl_auction_house::accounts::CreateAuctionHouse {
+    let accounts = mtly_auction_house::accounts::CreateAuctionHouse {
         treasury_mint,
         payer,
         authority,
@@ -51,7 +51,7 @@ pub fn create_auction_house(
     }
     .to_account_metas(None);
 
-    let data = mpl_auction_house::instruction::CreateAuctionHouse {
+    let data = mtly_auction_house::instruction::CreateAuctionHouse {
         _bump,
         fee_payer_bump,
         treasury_bump,
@@ -62,7 +62,7 @@ pub fn create_auction_house(
     .data();
 
     Instruction {
-        program_id: mpl_auction_house::id(),
+        program_id: mtly_auction_house::id(),
         data,
         accounts,
     }
@@ -78,7 +78,7 @@ pub fn delegate_auctioneer(
 ) -> Instruction {
     let (ah_auctioneer_pda, _) = find_auctioneer_pda(&auction_house, &auctioneer_authority);
 
-    let accounts = mpl_auction_house::accounts::DelegateAuctioneer {
+    let accounts = mtly_auction_house::accounts::DelegateAuctioneer {
         auction_house,
         authority,
         auctioneer_authority,
@@ -87,10 +87,10 @@ pub fn delegate_auctioneer(
     }
     .to_account_metas(None);
 
-    let data = mpl_auction_house::instruction::DelegateAuctioneer { scopes }.data();
+    let data = mtly_auction_house::instruction::DelegateAuctioneer { scopes }.data();
 
     Instruction {
-        program_id: mpl_auction_house::id(),
+        program_id: mtly_auction_house::id(),
         accounts,
         data,
     }
@@ -107,7 +107,7 @@ pub fn withdraw_from_treasury(
 ) -> Instruction {
     let (auction_house_treasury, _) = find_auction_house_treasury_address(&auction_house);
 
-    let accounts = mpl_auction_house::accounts::WithdrawFromTreasury {
+    let accounts = mtly_auction_house::accounts::WithdrawFromTreasury {
         treasury_mint,
         treasury_withdrawal_destination,
         auction_house,
@@ -118,13 +118,13 @@ pub fn withdraw_from_treasury(
     }
     .to_account_metas(None);
 
-    let data = mpl_auction_house::instruction::WithdrawFromTreasury {
+    let data = mtly_auction_house::instruction::WithdrawFromTreasury {
         amount: withdrawal_amount,
     }
     .data();
 
     Instruction {
-        program_id: mpl_auction_house::id(),
+        program_id: mtly_auction_house::id(),
         accounts,
         data,
     }

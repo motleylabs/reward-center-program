@@ -112,7 +112,7 @@ export const acceptOfferInstructionDiscriminator = [227, 82, 234, 131, 1, 18, 48
 export function createAcceptOfferInstruction(
   accounts: AcceptOfferInstructionAccounts,
   args: AcceptOfferInstructionArgs,
-  programId = new web3.PublicKey('RwDDvPp7ta9qqUwxbBfShsNreBaSsKvFcHzMxfBC3Ki'),
+  programId = new web3.PublicKey('rwdD3F6CgoCAoVaxcitXAeWRjQdiGc5AVABKCpQSMfd'),
 ) {
   const [data] = acceptOfferStruct.serialize({
     instructionDiscriminator: acceptOfferInstructionDiscriminator,

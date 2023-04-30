@@ -89,7 +89,7 @@ export const createListingInstructionDiscriminator = [18, 168, 45, 24, 191, 31, 
 export function createCreateListingInstruction(
   accounts: CreateListingInstructionAccounts,
   args: CreateListingInstructionArgs,
-  programId = new web3.PublicKey('RwDDvPp7ta9qqUwxbBfShsNreBaSsKvFcHzMxfBC3Ki'),
+  programId = new web3.PublicKey('rwdD3F6CgoCAoVaxcitXAeWRjQdiGc5AVABKCpQSMfd'),
 ) {
   const [data] = createListingStruct.serialize({
     instructionDiscriminator: createListingInstructionDiscriminator,

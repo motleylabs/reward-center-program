@@ -76,7 +76,7 @@ export const withdrawRewardCenterFundsInstructionDiscriminator = [
 export function createWithdrawRewardCenterFundsInstruction(
   accounts: WithdrawRewardCenterFundsInstructionAccounts,
   args: WithdrawRewardCenterFundsInstructionArgs,
-  programId = new web3.PublicKey('RwDDvPp7ta9qqUwxbBfShsNreBaSsKvFcHzMxfBC3Ki'),
+  programId = new web3.PublicKey('rwdD3F6CgoCAoVaxcitXAeWRjQdiGc5AVABKCpQSMfd'),
 ) {
   const [data] = withdrawRewardCenterFundsStruct.serialize({
     instructionDiscriminator: withdrawRewardCenterFundsInstructionDiscriminator,

@@ -6,20 +6,20 @@ cluster = "localnet"
 wallet = "~/.config/solana/id.json"
 
 [programs.localnet]
-reward_center = "rwdLstiU8aJU1DPdoPtocaNKApMhCFdCg283hz8dd3u"
+reward_center = "rwdD3F6CgoCAoVaxcitXAeWRjQdiGc5AVABKCpQSMfd"
 
 [programs.devnet]
-reward_center = "rwdLstiU8aJU1DPdoPtocaNKApMhCFdCg283hz8dd3u"
+reward_center = "rwdD3F6CgoCAoVaxcitXAeWRjQdiGc5AVABKCpQSMfd"
 
 [programs.testnet]
-reward_center = "rwdLstiU8aJU1DPdoPtocaNKApMhCFdCg283hz8dd3u"
+reward_center = "rwdD3F6CgoCAoVaxcitXAeWRjQdiGc5AVABKCpQSMfd"
 
 [programs.mainnet]
-reward_center = "rwdLstiU8aJU1DPdoPtocaNKApMhCFdCg283hz8dd3u"
+reward_center = "rwdD3F6CgoCAoVaxcitXAeWRjQdiGc5AVABKCpQSMfd"
 
 [[test.genesis]]
-address = "rwdLstiU8aJU1DPdoPtocaNKApMhCFdCg283hz8dd3u"
-program = "program/target/deploy/hpl_reward_center.so"
+address = "rwdD3F6CgoCAoVaxcitXAeWRjQdiGc5AVABKCpQSMfd"
+program = "program/target/deploy/mtly_reward_center.so"
 
 [workspace]
 members = [

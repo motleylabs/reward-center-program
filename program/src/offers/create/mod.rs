@@ -5,7 +5,7 @@ use crate::{
 };
 use anchor_lang::prelude::{Result, *};
 use anchor_spl::token::{Mint, Token, TokenAccount};
-use mpl_auction_house::{
+use mtly_auction_house::{
     constants::{AUCTIONEER, FEE_PAYER, PREFIX},
     cpi::accounts::{AuctioneerDeposit, AuctioneerPublicBuy},
     program::AuctionHouse as AuctionHouseProgram,
@@ -53,7 +53,7 @@ pub struct CreateOffer<'info> {
 
     pub token_account: Box<Account<'info, TokenAccount>>,
 
-    /// CHECK: assertion with mpl_auction_house assert_metadata_valid
+    /// CHECK: assertion with mtly_auction_house assert_metadata_valid
     /// Metaplex metadata account decorating SPL mint account.
     pub metadata: UncheckedAccount<'info>,
 
@@ -207,7 +207,7 @@ pub fn handler(
         reward_center_signer_seeds,
     );
 
-    mpl_auction_house::cpi::auctioneer_deposit(
+    mtly_auction_house::cpi::auctioneer_deposit(
         deposit_accounts_ctx,
         escrow_payment_bump,
         buyer_price,
@@ -236,7 +236,7 @@ pub fn handler(
         reward_center_signer_seeds,
     );
 
-    mpl_auction_house::cpi::auctioneer_public_buy(
+    mtly_auction_house::cpi::auctioneer_public_buy(
         public_buy_accounts_ctx,
         trade_state_bump,
         escrow_payment_bump,

@@ -7,8 +7,8 @@ use anchor_spl::{
     associated_token::AssociatedToken,
     token::{transfer, Mint, Token, TokenAccount, Transfer},
 };
-use mpl_auction_house::constants::TREASURY;
-use mpl_auction_house::{
+use mtly_auction_house::constants::TREASURY;
+use mtly_auction_house::{
     constants::{AUCTIONEER, FEE_PAYER, PREFIX, SIGNER},
     cpi::accounts::{AuctioneerExecuteSale, AuctioneerSell},
     instruction::AuctioneerExecuteSale as AuctioneerExecuteSaleParams,
@@ -83,7 +83,7 @@ pub struct AcceptOffer<'info> {
     /// Token mint account for the SPL token.
     pub token_mint: Box<Account<'info, Mint>>,
 
-    /// CHECK: assertion with mpl_auction_house assert_metadata_valid
+    /// CHECK: assertion with mtly_auction_house assert_metadata_valid
     /// Metaplex metadata account decorating SPL mint account.
     pub metadata: UncheckedAccount<'info>,
 

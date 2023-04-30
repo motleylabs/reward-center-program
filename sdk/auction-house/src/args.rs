@@ -1,4 +1,4 @@
-use mpl_auction_house::AuthorityScope;
+use mtly_auction_house::AuthorityScope;
 
 pub struct CreateAuctionHouseData {
     pub seller_fee_basis_points: u16,
