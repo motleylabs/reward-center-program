@@ -23,8 +23,8 @@ default = []
 solana-program = "=1.14.13"
 anchor-lang = "0.26.0"
 anchor-spl = "0.26.0"
-mtly-auction-house = { version = "1.4.0", features = ["cpi", "no-entrypoint"] }
-mpl-token-metadata = { version = "1.9.0", features = [ "no-entrypoint" ] }
+mtly-auction-house = { version = "1.4.3", features = ["cpi", "no-entrypoint"] }
+mpl-token-metadata = { version = "1.10.0", features = [ "no-entrypoint" ] }
 
 [dev-dependencies]
 anchor-client = "0.26.0"

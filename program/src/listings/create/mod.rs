@@ -76,6 +76,7 @@ pub struct CreateListing<'info> {
 
     /// CHECK: assertion with mtly_auction_house assert_metadata_valid
     /// Metaplex metadata account decorating SPL mint account.
+    #[account(mut)]
     pub metadata: UncheckedAccount<'info>,
 
     /// CHECK: Verified through CPI

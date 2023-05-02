@@ -2215,9 +2215,9 @@ dependencies = [
 
 [[package]]
 name = "mpl-token-metadata"
-version = "1.9.0"
+version = "1.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c8831a402e72f24052d019a83d72b70c38673caaf198e6e345575a77f98166b1"
+checksum = "f1e674db8846d4a603454ce9c93233dd8d503d62f2afe1b9e6486ce81e431f89"
 dependencies = [
  "arrayref",
  "borsh",
@@ -2272,9 +2272,9 @@ dependencies = [
 
 [[package]]
 name = "mtly-auction-house"
-version = "1.4.1"
+version = "1.4.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e4cf4e5b33cb19d007dffad9817fdc179fa717167395ca48852f83763db01c6e"
+checksum = "9225e794d671612e5523c7edc7d86ae427921ed055d47faaabc2e62d742f7efd"
 dependencies = [
  "anchor-lang",
  "anchor-spl",
