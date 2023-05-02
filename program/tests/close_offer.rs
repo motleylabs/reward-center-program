@@ -3,8 +3,8 @@
 pub mod reward_center_test;
 
 use anchor_client::solana_sdk::{pubkey::Pubkey, signature::Signer, transaction::Transaction};
-use mtly_reward_center::{pda::find_reward_center_address, reward_centers, state::*};
 use mtly_auction_house::{pda::find_auction_house_address, AuthorityScope};
+use mtly_reward_center::{pda::find_reward_center_address, reward_centers, state::*};
 use reward_center_test::fixtures::metadata;
 
 use mtly_reward_center_sdk::{

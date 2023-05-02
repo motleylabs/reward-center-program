@@ -1,6 +1,6 @@
 {
   "name": "@motleylabs/mtly-reward-center",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "Motley Labs Reward Center JavaScript API.",
   "main": "dist/src/generated/index.js",
   "types": "dist/src/generated/index.d.ts",

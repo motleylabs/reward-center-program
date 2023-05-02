@@ -42,7 +42,7 @@ export const createListingStruct = new beet.BeetArgsStruct<
  * @property [] rewardCenter
  * @property [_writable_, **signer**] wallet
  * @property [_writable_] tokenAccount
- * @property [] metadata
+ * @property [_writable_] metadata
  * @property [] authority
  * @property [] auctionHouse
  * @property [_writable_] auctionHouseFeeAccount
@@ -123,7 +123,7 @@ export function createCreateListingInstruction(
     },
     {
       pubkey: accounts.metadata,
-      isWritable: false,
+      isWritable: true,
       isSigner: false,
     },
     {

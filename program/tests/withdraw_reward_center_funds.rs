@@ -4,8 +4,8 @@ pub mod reward_center_test;
 use std::println;
 
 use anchor_client::solana_sdk::{signature::Signer, transaction::Transaction};
-use mtly_reward_center::{pda::find_reward_center_address, reward_centers, state::*};
 use mtly_auction_house::pda::find_auction_house_address;
+use mtly_reward_center::{pda::find_reward_center_address, reward_centers, state::*};
 
 use mpl_testing_utils::solana::airdrop;
 use solana_program_test::*;

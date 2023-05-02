@@ -1,3 +1,4 @@
+pub mod attribution;
 pub mod constants;
 pub mod errors;
 pub mod events;
@@ -12,6 +13,7 @@ pub mod withdraw;
 use anchor_lang::prelude::*;
 
 use crate::{
+    attribution::attribute::*,
     listings::{buy::*, close::*, create::*, update::*},
     offers::{accept::*, close::*, create::*},
     reward_centers::{create::*, edit::*},
@@ -91,5 +93,12 @@ pub mod reward_center {
         accept_offer_params: AcceptOfferParams,
     ) -> Result<()> {
         offers::accept::handler(ctx, accept_offer_params)
+    }
+
+    pub fn attribute<'info>(
+        ctx: Context<Attribute>,
+        attribute_params: AttributeParams,
+    ) -> Result<()> {
+        attribution::attribute::handler(ctx, attribute_params)
     }
 }

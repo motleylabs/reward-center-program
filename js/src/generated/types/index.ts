@@ -1,4 +1,5 @@
 export * from './AcceptOfferParams';
+export * from './AttributeParams';
 export * from './BuyListingParams';
 export * from './CloseOfferParams';
 export * from './CreateListingParams';

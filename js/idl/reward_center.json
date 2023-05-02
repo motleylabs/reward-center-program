@@ -1,5 +1,5 @@
 {
-  "version": "0.2.5",
+  "version": "0.2.6",
   "name": "reward_center",
   "instructions": [
     {
@@ -211,7 +211,7 @@
         },
         {
           "name": "metadata",
-          "isMut": false,
+          "isMut": true,
           "isSigner": false,
           "docs": [
             "Metaplex metadata account decorating SPL mint account."
@@ -1204,6 +1204,18 @@
           }
         }
       ]
+    },
+    {
+      "name": "attribute",
+      "accounts": [],
+      "args": [
+        {
+          "name": "attributeParams",
+          "type": {
+            "defined": "AttributeParams"
+          }
+        }
+      ]
     }
   ],
   "accounts": [
@@ -1319,6 +1331,18 @@
     }
   ],
   "types": [
+    {
+      "name": "AttributeParams",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "memo",
+            "type": "string"
+          }
+        ]
+      }
+    },
     {
       "name": "BuyListingParams",
       "type": {
