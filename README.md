@@ -1,3 +1,24 @@
+## Motley Labs Reward Center (`rwdD3F6CgoCAoVaxcitXAeWRjQdiGc5AVABKCpQSMfd`)
+
+A fork of Holaplex [Reward Center](https://github.com/holaplex/reward-center-program) to allow Motley Labs to iterate quickly on new functionality.
+
+This fork is deployed at `rwdD3F6CgoCAoVaxcitXAeWRjQdiGc5AVABKCpQSMfd` and can be used by the public.
+
+`mtly-reward-center` composes on top of [mtly-auction-house](https://github.com/motleylabs/metaplex-program-library/tree/motleylabs/auction-house).
+
+A crate is available at crates.io: [![Crate][mtly-reward-center-img-long]][mtly-reward-center-crate]
+
+A TypeScript API is available on NPM: [![NPM][mtly-reward-center-nimg-long]][mtly-reward-center-npm]
+
+## Verification of on-chain binary
+
+Steps to verify the on-chain binary:
+
+```
+cd program
+anchor verify rwdD3F6CgoCAoVaxcitXAeWRjQdiGc5AVABKCpQSMfd
+```
+
 # Reward Center
 
 A program that facilitates the payout of a spl token as rewards to buyer and sellers on the successful sell of an NFTs.
@@ -78,3 +99,11 @@ $ cd program
 $ ./build.sh
 $ ./test.sh
 ```
+
+[mtly-reward-center-crate]:https://crates.io/crates/mtly-reward-center
+[mtly-reward-center-img-long]:https://img.shields.io/crates/v/mtly-reward-center?label=crates.io%20%7C%20mtly-reward-center&logo=rust
+[mtly-reward-center-img]:https://img.shields.io/crates/v/mtly-reward-center?logo=rust
+
+[mtly-reward-center-npm]:https://www.npmjs.com/package/@motleylabs/mtly-reward-center
+[mtly-reward-center-nimg-long]:https://img.shields.io/npm/v/@motleylabs/mtly-reward-center?label=npm%20%7C%20mtly-reward-center&logo=typescript
+[mtly-reward-center-nimg]:https://img.shields.io/npm/v/@motleylabs/mtly-reward-center?logo=typescript
