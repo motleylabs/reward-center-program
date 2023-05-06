@@ -117,6 +117,7 @@ pub struct Offer {
     pub token_size: u64,
     pub bump: u8,
     pub created_at: i64,
+    pub price_with_fees: u64,
 }
 
 impl Offer {
@@ -128,6 +129,7 @@ impl Offer {
         8 + // price
         8 + // token_size
         1 + // bump
-        8 // created_at
+        8 + // created_at
+        8 // price_with_fees
     }
 }

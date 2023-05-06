@@ -5,6 +5,7 @@ use crate::{
 };
 use anchor_lang::prelude::{Result, *};
 use anchor_spl::token::{Mint, Token, TokenAccount};
+use mpl_token_metadata::state::{Metadata, TokenMetadataAccount};
 use mtly_auction_house::{
     constants::{AUCTIONEER, FEE_PAYER, PREFIX},
     cpi::accounts::{AuctioneerDeposit, AuctioneerPublicBuy},
@@ -55,6 +56,7 @@ pub struct CreateOffer<'info> {
 
     /// CHECK: assertion with mtly_auction_house assert_metadata_valid
     /// Metaplex metadata account decorating SPL mint account.
+    #[account(mut)]
     pub metadata: UncheckedAccount<'info>,
 
     /// CHECK: Not dangerous. Account seeds checked in constraint.
@@ -179,6 +181,13 @@ pub fn handler(
         .ok_or(RewardCenterError::BumpSeedNotInHashMap)?;
     offer.created_at = clock.unix_timestamp;
 
+    let md = Box::new(Metadata::from_account_info(&metadata.to_account_info())?);
+
+    let price = buyer_price
+        + ((auction_house.seller_fee_basis_points as u64 * buyer_price) / 10000)
+        + ((md.data.seller_fee_basis_points as u64 * buyer_price) / 10000);
+    offer.price_with_fees = price;
+
     let reward_center_signer_seeds: &[&[&[u8]]] = &[&[
         REWARD_CENTER.as_bytes(),
         auction_house_key.as_ref(),
@@ -207,11 +216,7 @@ pub fn handler(
         reward_center_signer_seeds,
     );
 
-    mtly_auction_house::cpi::auctioneer_deposit(
-        deposit_accounts_ctx,
-        escrow_payment_bump,
-        buyer_price,
-    )?;
+    mtly_auction_house::cpi::auctioneer_deposit(deposit_accounts_ctx, escrow_payment_bump, price)?;
 
     let public_buy_accounts_ctx = CpiContext::new_with_signer(
         ctx.accounts.auction_house_program.to_account_info(),
@@ -242,6 +247,7 @@ pub fn handler(
         escrow_payment_bump,
         buyer_price,
         token_size,
+        Some(price),
     )?;
 
     Ok(())

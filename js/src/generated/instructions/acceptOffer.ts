@@ -44,7 +44,7 @@ export const acceptOfferStruct = new beet.BeetArgsStruct<
  * @property [_writable_] offer
  * @property [_writable_] tokenAccount
  * @property [] tokenMint
- * @property [] metadata
+ * @property [_writable_] metadata
  * @property [] treasuryMint
  * @property [_writable_] sellerPaymentReceiptAccount
  * @property [_writable_] buyerReceiptTokenAccount
@@ -156,7 +156,7 @@ export function createAcceptOfferInstruction(
     },
     {
       pubkey: accounts.metadata,
-      isWritable: false,
+      isWritable: true,
       isSigner: false,
     },
     {

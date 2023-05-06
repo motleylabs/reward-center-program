@@ -48,7 +48,7 @@ pub struct CreateListing<'info> {
         constraint = create_listing_params.price > 0 @ RewardCenterError::PriceInvalid,
         bump,
     )]
-    pub listing: Account<'info, Listing>,
+    pub listing: Box<Account<'info, Listing>>,
 
     /// The auctioneer program PDA running this auction.
     #[account(

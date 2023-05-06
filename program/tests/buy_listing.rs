@@ -47,13 +47,14 @@ async fn buy_listing_success() {
     let mint = native_mint::id();
     let collection = Pubkey::from_str(reward_center_test::TEST_COLLECTION).unwrap();
 
+    let sfbp = 1000;
     let metadata = metadata::create(
         &mut context,
         metadata::Params {
             name: "Test",
             symbol: "TST",
             uri: "https://nfts.exp.com/1.json",
-            seller_fee_basis_points: 10,
+            seller_fee_basis_points: sfbp,
             is_mutable: false,
             collection: Some(Collection {
                 verified: false,
@@ -142,8 +143,10 @@ async fn buy_listing_success() {
         treasury_withdrawal_destination: wallet,
         treasury_withdrawal_destination_owner: wallet,
     };
+
+    let ah_sfbp = 100;
     let create_auction_house_data = mtly_auction_house_sdk::CreateAuctionHouseData {
-        seller_fee_basis_points: 100,
+        seller_fee_basis_points: ah_sfbp,
         requires_sign_off: false,
         can_change_sale_price: false,
     };
@@ -303,8 +306,13 @@ async fn buy_listing_success() {
         metadata: metadata_address,
     };
 
+    let listing_price = reward_center_test::ONE_SOL * 7;
+    let _price = listing_price
+        + ((ah_sfbp as u64 * listing_price) / 10000)
+        + ((sfbp as u64 * listing_price) / 10000);
+
     let buy_listing_params = BuyListingData {
-        price: reward_center_test::ONE_SOL * 7,
+        price: listing_price,
         token_size: 1,
         reward_mint: reward_mint_pubkey,
     };

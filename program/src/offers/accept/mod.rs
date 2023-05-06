@@ -85,6 +85,7 @@ pub struct AcceptOffer<'info> {
 
     /// CHECK: assertion with mtly_auction_house assert_metadata_valid
     /// Metaplex metadata account decorating SPL mint account.
+    #[account(mut)]
     pub metadata: UncheckedAccount<'info>,
 
     /// Auction House treasury mint account.
@@ -274,6 +275,72 @@ pub struct AcceptOffer<'info> {
     pub rent: Sysvar<'info, Rent>,
 }
 
+// First 7 accts go to AuctioneerExecuteSale, next 8 accts go to AuctioneerSell
+// Order is reversed from CPI invocation as AuctioneerExecuteSale takes a
+// variable number of creator accounts.
+#[derive(Accounts)]
+pub struct AcceptOfferRemainingAccounts<'info> {
+    // - AuctioneerExecuteSale
+    ///CHECK: checked in execute_sale function
+    pub metadata_program_1: UncheckedAccount<'info>,
+    ///CHECK: checked in cpi
+    pub edition_1: UncheckedAccount<'info>,
+    ///CHECK: checked in cpi
+    #[account(mut)]
+    pub owner_tr_1: UncheckedAccount<'info>,
+    ///CHECK: checked in cpi
+    #[account(mut)]
+    pub destination_tr_1: UncheckedAccount<'info>,
+    ///CHECK: checked in cpi
+    pub auth_rules_program_1: UncheckedAccount<'info>,
+    ///CHECK: checked in cpi
+    pub auth_rules_1: UncheckedAccount<'info>,
+    ///CHECK: checked in cpi
+    pub sysvar_instructions_1: UncheckedAccount<'info>,
+    // - AuctioneerSell
+    ///CHECK: checked in sell function
+    pub metadata_program_2: UncheckedAccount<'info>,
+    ///CHECK: checked in cpi
+    #[account(mut)]
+    pub delegate_record_2: UncheckedAccount<'info>,
+    ///CHECK: checked in cpi
+    #[account(mut)]
+    pub token_record_2: UncheckedAccount<'info>,
+    ///CHECK: checked in cpi
+    pub token_mint_2: UncheckedAccount<'info>,
+    ///CHECK: checked in cpi
+    pub edition_2: UncheckedAccount<'info>,
+    ///CHECK: checked in cpi
+    pub auth_rules_program_2: UncheckedAccount<'info>,
+    ///CHECK: checked in cpi
+    pub auth_rules_2: UncheckedAccount<'info>,
+    ///CHECK: checked in cpi
+    pub sysvar_instructions_2: UncheckedAccount<'info>,
+}
+
+#[inline(never)]
+pub fn accept_offer_remaining_accounts<'c, 'info>(
+    remaining_accounts: &'c [AccountInfo<'info>],
+) -> (
+    Option<&'c [AccountInfo<'info>]>,
+    Option<&'c [AccountInfo<'info>]>,
+) {
+    if let Some(m_ix) = remaining_accounts
+        .iter()
+        .position(|x| x.key() == mpl_token_metadata::ID)
+    {
+        if remaining_accounts.len() == m_ix + 15 {
+            // [creators, (exec sale) metaq, 7 accts, (sell) metaq, 8 accts
+            return (
+                Some(&remaining_accounts[m_ix + 7..]),
+                Some(&remaining_accounts[..m_ix + 7]),
+            );
+        }
+    };
+
+    return (None, Some(remaining_accounts));
+}
+
 pub fn handler<'info>(
     ctx: Context<'_, '_, '_, 'info, AcceptOffer<'info>>,
     AcceptOfferParams {
@@ -293,7 +360,16 @@ pub fn handler<'info>(
     let token_size = offer.token_size;
     let buyer_price = offer.price;
 
-    assert_metadata_valid(metadata, token_account)?;
+    let price_with_fees = offer.price_with_fees;
+    // sanity check to keep old offers working
+    let buyer_price_with_fees =
+        if price_with_fees < buyer_price || price_with_fees > buyer_price * 3 {
+            0
+        } else {
+            price_with_fees
+        };
+
+    assert_metadata_valid(metadata, &token_account)?;
 
     let reward_center_signer_seeds: &[&[&[u8]]] = &[&[
         REWARD_CENTER.as_bytes(),
@@ -301,134 +377,156 @@ pub fn handler<'info>(
         &[reward_center_bump],
     ]];
 
-    let (create_listing_ix, create_listing_account_infos) =
-        make_auctioneer_instruction(AuctioneerInstructionArgs {
-            accounts: AuctioneerSell {
-                metadata: metadata.to_account_info(),
-                wallet: ctx.accounts.seller.to_account_info(),
-                token_account: ctx.accounts.token_account.to_account_info(),
-                auction_house: ctx.accounts.auction_house.to_account_info(),
-                auction_house_fee_account: ctx.accounts.auction_house_fee_account.to_account_info(),
-                seller_trade_state: ctx.accounts.seller_trade_state.to_account_info(),
-                free_seller_trade_state: ctx.accounts.free_seller_trade_state.to_account_info(),
-                authority: ctx.accounts.authority.to_account_info(),
-                auctioneer_authority: ctx.accounts.reward_center.to_account_info(),
-                ah_auctioneer_pda: ctx.accounts.ah_auctioneer_pda.to_account_info(),
-                token_program: ctx.accounts.token_program.to_account_info(),
-                system_program: ctx.accounts.system_program.to_account_info(),
-                program_as_signer: ctx.accounts.program_as_signer.to_account_info(),
-                rent: ctx.accounts.rent.to_account_info(),
-            },
-            instruction_data: AuctioneerSellParams {
-                trade_state_bump: seller_trade_state_bump,
-                free_trade_state_bump,
-                program_as_signer_bump,
-                token_size,
-            }
-            .data(),
-            auctioneer_authority: ctx.accounts.reward_center.key(),
-            remaining_accounts: None,
-        });
+    let (sell_remaining_accounts, execute_sale_remaining_accounts) =
+        accept_offer_remaining_accounts(&ctx.remaining_accounts);
 
-    invoke_signed(
-        &create_listing_ix,
-        &create_listing_account_infos,
-        reward_center_signer_seeds,
-    )?;
-
-    let (execute_sale_ix, execute_sale_account_infos) =
-        make_auctioneer_instruction(AuctioneerInstructionArgs {
-            accounts: AuctioneerExecuteSale {
-                buyer: ctx.accounts.buyer.to_account_info(),
-                seller: ctx.accounts.seller.to_account_info(),
-                token_account: ctx.accounts.token_account.to_account_info(),
-                ah_auctioneer_pda: ctx.accounts.ah_auctioneer_pda.to_account_info(),
-                auction_house: ctx.accounts.auction_house.to_account_info(),
-                auction_house_fee_account: ctx.accounts.auction_house_fee_account.to_account_info(),
-                auction_house_treasury: ctx.accounts.auction_house_treasury.to_account_info(),
-                buyer_receipt_token_account: ctx
-                    .accounts
-                    .buyer_receipt_token_account
-                    .to_account_info(),
-                seller_payment_receipt_account: ctx
-                    .accounts
-                    .seller_payment_receipt_account
-                    .to_account_info(),
-                buyer_trade_state: ctx.accounts.buyer_trade_state.to_account_info(),
-                free_trade_state: ctx.accounts.free_seller_trade_state.to_account_info(),
-                seller_trade_state: ctx.accounts.seller_trade_state.to_account_info(),
-                escrow_payment_account: ctx.accounts.escrow_payment_account.to_account_info(),
-                program_as_signer: ctx.accounts.program_as_signer.to_account_info(),
-                authority: ctx.accounts.authority.to_account_info(),
-                metadata: ctx.accounts.metadata.to_account_info(),
-                token_mint: ctx.accounts.token_mint.to_account_info(),
-                treasury_mint: ctx.accounts.treasury_mint.to_account_info(),
-                auctioneer_authority: ctx.accounts.reward_center.to_account_info(),
-                system_program: ctx.accounts.system_program.to_account_info(),
-                token_program: ctx.accounts.token_program.to_account_info(),
-                ata_program: ctx.accounts.ata_program.to_account_info(),
-                rent: ctx.accounts.rent.to_account_info(),
-            },
-            instruction_data: AuctioneerExecuteSaleParams {
-                escrow_payment_bump,
-                program_as_signer_bump,
-                token_size,
-                buyer_price,
-                _free_trade_state_bump: free_trade_state_bump,
-            }
-            .data(),
-            auctioneer_authority: ctx.accounts.reward_center.key(),
-            remaining_accounts: Some(ctx.remaining_accounts),
-        });
-
-    invoke_signed(
-        &execute_sale_ix,
-        &execute_sale_account_infos,
-        reward_center_signer_seeds,
-    )?;
-
-    let (seller_payout, buyer_payout) = reward_center.payouts(buyer_price)?;
-
-    // Buyer transfer
-    let reward_center_reward_token_balance = ctx.accounts.reward_center_reward_token_account.amount;
-    if buyer_payout > 0 && reward_center_reward_token_balance >= buyer_payout {
-        transfer(
-            CpiContext::new_with_signer(
-                ctx.accounts.token_program.to_account_info(),
-                Transfer {
-                    authority: ctx.accounts.reward_center.to_account_info(),
-                    from: ctx
+    {
+        let (create_listing_ix, create_listing_account_infos) =
+            make_auctioneer_instruction(AuctioneerInstructionArgs {
+                accounts: AuctioneerSell {
+                    metadata: metadata.to_account_info(),
+                    wallet: ctx.accounts.seller.to_account_info(),
+                    token_account: ctx.accounts.token_account.to_account_info(),
+                    auction_house: ctx.accounts.auction_house.to_account_info(),
+                    auction_house_fee_account: ctx
                         .accounts
-                        .reward_center_reward_token_account
+                        .auction_house_fee_account
                         .to_account_info(),
-                    to: ctx.accounts.buyer_reward_token_account.to_account_info(),
+                    seller_trade_state: ctx.accounts.seller_trade_state.to_account_info(),
+                    free_seller_trade_state: ctx.accounts.free_seller_trade_state.to_account_info(),
+                    authority: ctx.accounts.authority.to_account_info(),
+                    auctioneer_authority: ctx.accounts.reward_center.to_account_info(),
+                    ah_auctioneer_pda: ctx.accounts.ah_auctioneer_pda.to_account_info(),
+                    token_program: ctx.accounts.token_program.to_account_info(),
+                    system_program: ctx.accounts.system_program.to_account_info(),
+                    program_as_signer: ctx.accounts.program_as_signer.to_account_info(),
+                    rent: ctx.accounts.rent.to_account_info(),
                 },
-                reward_center_signer_seeds,
-            ),
-            buyer_payout,
+                instruction_data: AuctioneerSellParams {
+                    trade_state_bump: seller_trade_state_bump,
+                    free_trade_state_bump,
+                    program_as_signer_bump,
+                    token_size,
+                }
+                .data(),
+                auctioneer_authority: ctx.accounts.reward_center.key(),
+                remaining_accounts: sell_remaining_accounts,
+            });
+
+        invoke_signed(
+            &create_listing_ix,
+            &create_listing_account_infos,
+            reward_center_signer_seeds,
         )?;
     }
 
-    // Seller transfer
-    ctx.accounts.reward_center_reward_token_account.reload()?;
-    let reward_center_reward_token_balance = ctx.accounts.reward_center_reward_token_account.amount;
-    if seller_payout > 0 && reward_center_reward_token_balance >= seller_payout {
-        transfer(
-            CpiContext::new_with_signer(
-                ctx.accounts.token_program.to_account_info(),
-                Transfer {
-                    authority: ctx.accounts.reward_center.to_account_info(),
-                    from: ctx
+    {
+        let (execute_sale_ix, execute_sale_account_infos) =
+            make_auctioneer_instruction(AuctioneerInstructionArgs {
+                accounts: AuctioneerExecuteSale {
+                    buyer: ctx.accounts.buyer.to_account_info(),
+                    seller: ctx.accounts.seller.to_account_info(),
+                    token_account: ctx.accounts.token_account.to_account_info(),
+                    ah_auctioneer_pda: ctx.accounts.ah_auctioneer_pda.to_account_info(),
+                    auction_house: ctx.accounts.auction_house.to_account_info(),
+                    auction_house_fee_account: ctx
                         .accounts
-                        .reward_center_reward_token_account
+                        .auction_house_fee_account
                         .to_account_info(),
-                    to: ctx.accounts.seller_reward_token_account.to_account_info(),
+                    auction_house_treasury: ctx.accounts.auction_house_treasury.to_account_info(),
+                    buyer_receipt_token_account: ctx
+                        .accounts
+                        .buyer_receipt_token_account
+                        .to_account_info(),
+                    seller_payment_receipt_account: ctx
+                        .accounts
+                        .seller_payment_receipt_account
+                        .to_account_info(),
+                    buyer_trade_state: ctx.accounts.buyer_trade_state.to_account_info(),
+                    free_trade_state: ctx.accounts.free_seller_trade_state.to_account_info(),
+                    seller_trade_state: ctx.accounts.seller_trade_state.to_account_info(),
+                    escrow_payment_account: ctx.accounts.escrow_payment_account.to_account_info(),
+                    program_as_signer: ctx.accounts.program_as_signer.to_account_info(),
+                    authority: ctx.accounts.authority.to_account_info(),
+                    metadata: ctx.accounts.metadata.to_account_info(),
+                    token_mint: ctx.accounts.token_mint.to_account_info(),
+                    treasury_mint: ctx.accounts.treasury_mint.to_account_info(),
+                    auctioneer_authority: ctx.accounts.reward_center.to_account_info(),
+                    system_program: ctx.accounts.system_program.to_account_info(),
+                    token_program: ctx.accounts.token_program.to_account_info(),
+                    ata_program: ctx.accounts.ata_program.to_account_info(),
+                    rent: ctx.accounts.rent.to_account_info(),
                 },
-                reward_center_signer_seeds,
-            ),
-            seller_payout,
-        )?
-    };
+                instruction_data: AuctioneerExecuteSaleParams {
+                    escrow_payment_bump,
+                    program_as_signer_bump,
+                    token_size,
+                    buyer_price: buyer_price,
+                    buyer_price_with_fees: if buyer_price_with_fees > 0 {
+                        Some(buyer_price_with_fees)
+                    } else {
+                        None
+                    },
+                    _free_trade_state_bump: free_trade_state_bump,
+                }
+                .data(),
+                auctioneer_authority: ctx.accounts.reward_center.key(),
+                remaining_accounts: execute_sale_remaining_accounts,
+            });
+
+        invoke_signed(
+            &execute_sale_ix,
+            &execute_sale_account_infos,
+            reward_center_signer_seeds,
+        )?;
+    }
+
+    {
+        let (seller_payout, buyer_payout) = reward_center.payouts(buyer_price)?;
+
+        // Buyer transfer
+        let reward_center_reward_token_balance =
+            ctx.accounts.reward_center_reward_token_account.amount;
+        if buyer_payout > 0 && reward_center_reward_token_balance >= buyer_payout {
+            transfer(
+                CpiContext::new_with_signer(
+                    ctx.accounts.token_program.to_account_info(),
+                    Transfer {
+                        authority: ctx.accounts.reward_center.to_account_info(),
+                        from: ctx
+                            .accounts
+                            .reward_center_reward_token_account
+                            .to_account_info(),
+                        to: ctx.accounts.buyer_reward_token_account.to_account_info(),
+                    },
+                    reward_center_signer_seeds,
+                ),
+                buyer_payout,
+            )?;
+        }
+
+        // Seller transfer
+        ctx.accounts.reward_center_reward_token_account.reload()?;
+        let reward_center_reward_token_balance =
+            ctx.accounts.reward_center_reward_token_account.amount;
+        if seller_payout > 0 && reward_center_reward_token_balance >= seller_payout {
+            transfer(
+                CpiContext::new_with_signer(
+                    ctx.accounts.token_program.to_account_info(),
+                    Transfer {
+                        authority: ctx.accounts.reward_center.to_account_info(),
+                        from: ctx
+                            .accounts
+                            .reward_center_reward_token_account
+                            .to_account_info(),
+                        to: ctx.accounts.seller_reward_token_account.to_account_info(),
+                    },
+                    reward_center_signer_seeds,
+                ),
+                seller_payout,
+            )?
+        };
+    }
 
     Ok(())
 }

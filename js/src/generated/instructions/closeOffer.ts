@@ -43,7 +43,7 @@ export const closeOfferStruct = new beet.BeetArgsStruct<
  * @property [_writable_] tokenAccount
  * @property [_writable_] receiptAccount
  * @property [_writable_] escrowPaymentAccount
- * @property [] metadata
+ * @property [_writable_] metadata
  * @property [] tokenMint
  * @property [] authority
  * @property [] rewardCenter
@@ -133,7 +133,7 @@ export function createCloseOfferInstruction(
     },
     {
       pubkey: accounts.metadata,
-      isWritable: false,
+      isWritable: true,
       isSigner: false,
     },
     {

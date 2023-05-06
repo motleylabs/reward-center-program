@@ -1,5 +1,5 @@
 {
-  "version": "0.2.6",
+  "version": "0.2.8",
   "name": "reward_center",
   "instructions": [
     {
@@ -506,7 +506,7 @@
         },
         {
           "name": "metadata",
-          "isMut": false,
+          "isMut": true,
           "isSigner": false,
           "docs": [
             "Metaplex metadata account decorating SPL mint account."
@@ -633,7 +633,7 @@
         },
         {
           "name": "metadata",
-          "isMut": false,
+          "isMut": true,
           "isSigner": false,
           "docs": [
             "Metaplex metadata account decorating SPL mint account."
@@ -1032,7 +1032,7 @@
         },
         {
           "name": "metadata",
-          "isMut": false,
+          "isMut": true,
           "isSigner": false,
           "docs": [
             "Metaplex metadata account decorating SPL mint account."
@@ -1325,6 +1325,10 @@
           {
             "name": "createdAt",
             "type": "i64"
+          },
+          {
+            "name": "priceWithFees",
+            "type": "u64"
           }
         ]
       }
@@ -1655,7 +1659,7 @@
   "metadata": {
     "address": "rwdD3F6CgoCAoVaxcitXAeWRjQdiGc5AVABKCpQSMfd",
     "origin": "anchor",
-    "binaryVersion": "0.26.0",
-    "libVersion": "0.26.0"
+    "binaryVersion": "0.27.0",
+    "libVersion": "0.27.0"
   }
 }

@@ -22,6 +22,7 @@ export type OfferArgs = {
   tokenSize: beet.bignum;
   bump: number;
   createdAt: beet.bignum;
+  priceWithFees: beet.bignum;
 };
 
 export const offerDiscriminator = [215, 88, 60, 71, 170, 162, 73, 229];
@@ -41,6 +42,7 @@ export class Offer implements OfferArgs {
     readonly tokenSize: beet.bignum,
     readonly bump: number,
     readonly createdAt: beet.bignum,
+    readonly priceWithFees: beet.bignum,
   ) {}
 
   /**
@@ -55,6 +57,7 @@ export class Offer implements OfferArgs {
       args.tokenSize,
       args.bump,
       args.createdAt,
+      args.priceWithFees,
     );
   }
 
@@ -187,6 +190,17 @@ export class Offer implements OfferArgs {
         }
         return x;
       })(),
+      priceWithFees: (() => {
+        const x = <{ toNumber: () => number }>this.priceWithFees;
+        if (typeof x.toNumber === 'function') {
+          try {
+            return x.toNumber();
+          } catch (_) {
+            return x;
+          }
+        }
+        return x;
+      })(),
     };
   }
 }
@@ -210,6 +224,7 @@ export const offerBeet = new beet.BeetStruct<
     ['tokenSize', beet.u64],
     ['bump', beet.u8],
     ['createdAt', beet.i64],
+    ['priceWithFees', beet.u64],
   ],
   Offer.fromArgs,
   'Offer',

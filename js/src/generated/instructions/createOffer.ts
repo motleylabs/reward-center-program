@@ -43,7 +43,7 @@ export const createOfferStruct = new beet.BeetArgsStruct<
  * @property [] transferAuthority
  * @property [] treasuryMint
  * @property [] tokenAccount
- * @property [] metadata
+ * @property [_writable_] metadata
  * @property [_writable_] escrowPaymentAccount
  * @property [] authority
  * @property [] rewardCenter
@@ -132,7 +132,7 @@ export function createCreateOfferInstruction(
     },
     {
       pubkey: accounts.metadata,
-      isWritable: false,
+      isWritable: true,
       isSigner: false,
     },
     {
