@@ -2282,7 +2282,7 @@ dependencies = [
 
 [[package]]
 name = "mtly-reward-center"
-version = "0.2.8"
+version = "0.2.9"
 dependencies = [
  "anchor-client",
  "anchor-lang",
@@ -2305,7 +2305,7 @@ dependencies = [
 
 [[package]]
 name = "mtly-reward-center-sdk"
-version = "0.2.8"
+version = "0.2.9"
 dependencies = [
  "anchor-client",
  "anchor-lang",

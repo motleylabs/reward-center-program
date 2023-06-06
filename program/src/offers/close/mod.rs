@@ -157,6 +157,7 @@ pub fn handler(
     let offer = try_deserialize_offer(&offer_account_info)?;
     let token_size = offer.token_size;
     let buyer_price = offer.price;
+    let price = offer.price_with_fees;
     let auction_house_key = auction_house.key();
 
     assert_metadata_valid(metadata, token_account)?;
@@ -197,7 +198,7 @@ pub fn handler(
 
     let withdraw_offer_params = AuctioneerWithdrawParams {
         escrow_payment_bump,
-        amount: buyer_price,
+        amount: price,
     };
 
     let (withdraw_offer_ix, withdraw_offer_account_infos) =
